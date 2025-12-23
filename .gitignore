@@ -1,0 +1,48 @@
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.iml
+# 前端通用（所有前端项目共用）
+node_modules
+dist
+build
+out
+*.log
+dist-ssr
+*.local
+# Tauri 桌面端
+**/src-tauri/target
+**/src-tauri/Cargo.lock
+**/.tauri
+
+# Rust 通用
+*.rs.bk
+target/
+Cargo.lock
+
+# Golang 通用
+**/golang/bin
+**/golang/pkg
+go.sum
+
+# Python 通用
+**/python/venv
+**/python/__pycache__
+**/python/*.pyc
+**/python/dist
+**/python/build
+
+# Java 通用
+**/java/target
+**/java/.mvn
+**/java/*.iml
+**/java/.idea
+
+

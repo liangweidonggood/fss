@@ -1,0 +1,21 @@
+{
+  "name": "fss",
+  "version": "1.0.0",
+  "description": "fss(full-stack-scaffolding) 全栈脚手架，支持可扩展前端+多业务多语言后端",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "fss",
+    "全栈脚手架",
+    "monorepo",
+    "pnpm",
+    "turborepo"
+  ],
+  "author": "weidong_com@163.com",
+  "license": "ISC",
+  "packageManager": "pnpm@10.26.0",
+  "devDependencies": {
+    "prettier": "^3.7.4"
+  }
+}

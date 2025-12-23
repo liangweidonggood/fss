@@ -1,0 +1,11 @@
+packages:
+  # 前端项目
+  - "apps/**"
+  # 公共包
+  - "packages/**"
+  # 排除不需要 pnpm 管控的目录
+  - "!**/node_modules"
+  - "!**/target"
+  - "!**/dist"
+  - "!apps/**/src-tauri"
+  - "!backend/**"

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [
+    "global/config/.env.example",
+    "global/proto/**/*.proto",
+    "global/config/tsconfig.base.json"
+  ],
+  "pipeline": {
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "inputs": ["src/**/*", "vite.config.ts", "tauri.conf.json"]
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [
+        "dist/**",
+        "build/**",
+        "out/**",
+        "**/src-tauri/target/release/bundle/**"
+      ],
+      "inputs": ["src/**/*", "vite.config.ts", "tauri.conf.json"]
+    },
+    "lint": {
+      "inputs": ["src/**/*", ".eslintrc.js"]
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
+    },
+    "clean": {
+      "cache": false
+    }
+  }
+}
