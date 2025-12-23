@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "description": "fss(full-stack-scaffolding) 全栈脚手架，支持可扩展前端+多业务多语言后端",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "eslint:check": "eslint .",
+    "eslint": "eslint . --fix",
+    "stylelint:check": "stylelint \"**/*.{css,scss,less}\"",
+    "stylelint": "stylelint \"**/*.{css,scss,less}\" --fix"
   },
   "keywords": [
     "fss",
@@ -16,6 +21,20 @@
   "license": "ISC",
   "packageManager": "pnpm@10.26.0",
   "devDependencies": {
-    "prettier": "^3.7.4"
+    "@eslint/js": "^9.39.2",
+    "@typescript-eslint/parser": "^8.50.1",
+    "eslint": "^9.39.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.26",
+    "globals": "^16.5.0",
+    "postcss-less": "^6.0.0",
+    "prettier": "^3.7.4",
+    "stylelint": "^16.26.1",
+    "stylelint-config-recess-order": "^7.4.0",
+    "stylelint-config-standard": "^39.0.1",
+    "stylelint-less": "^3.0.1",
+    "stylelint-scss": "^6.13.0",
+    "typescript-eslint": "^8.50.1"
   }
 }
