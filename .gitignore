@@ -9,6 +9,7 @@
 *.sln
 *.sw?
 *.iml
+.turbo/
 # 前端通用（所有前端项目共用）
 node_modules
 dist

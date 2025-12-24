@@ -4,7 +4,7 @@
   "description": "fss(full-stack-scaffolding) 全栈脚手架，支持可扩展前端+多业务多语言后端",
   "type": "module",
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "eslint:check": "eslint .",
