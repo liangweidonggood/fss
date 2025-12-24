@@ -8,23 +8,36 @@
     "stylelint-less"
   ],
   "rules": {
-    "indentation": 2,
-    "string-quotes": "single",
     "no-empty-source": null,
-    "declaration-block-trailing-semicolon": "always",
-    "selector-max-id": 0,
-    "property-no-unknown": [true, { "ignoreProperties": [] }],
+    "selector-max-id": null,
+    "property-no-unknown": [
+      true,
+      {
+        "ignoreProperties": []
+      }
+    ],
     "at-rule-no-unknown": null,
     "scss/at-rule-no-unknown": true,
-    "less/at-rule-no-unknown": true
+    "order/properties-order": null,
+    "rule-empty-line-before": null,
+    "declaration-empty-line-before": null,
+    "color-function-alias-notation": null,
+    "color-function-notation": null,
+    "alpha-value-notation": null,
+    "color-hex-length": null,
+    "value-keyword-case": null
   },
   "overrides": [
     {
-      "files": ["**/*.less"],
+      "files": [
+        "**/*.less"
+      ],
       "customSyntax": "postcss-less"
     },
     {
-      "files": ["**/*.scss"],
+      "files": [
+        "**/*.scss"
+      ],
       "customSyntax": "postcss-scss"
     }
   ],
