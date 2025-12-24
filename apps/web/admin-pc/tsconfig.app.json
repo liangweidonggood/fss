@@ -2,7 +2,7 @@
   "extends": "../../../global/config/tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": "./",
-    "paths": { "@/*": ["src/*"] }
+    "paths": { "@/*": ["./src/*"] }
   },
   "include": ["src", "vite-env.d.ts"]
 }
