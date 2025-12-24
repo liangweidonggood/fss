@@ -3,33 +3,143 @@
   "globalDependencies": [
     "global/config/.env.example",
     "global/proto/**/*.proto",
-    "global/config/tsconfig.base.json"
+    "global/config/tsconfig.base.json",
+    ".env",
+    ".env.local",
+    "pnpm-lock.yaml",
+    "package.json"
   ],
-  "pipeline": {
+  "globalEnv": [
+    "NODE_ENV",
+    "VITE_*",
+    "TAURI_*"
+  ],
+  "tasks": {
     "dev": {
       "cache": false,
       "persistent": true,
-      "inputs": ["src/**/*", "vite.config.ts", "tauri.conf.json"]
+      "inputs": [
+        "src/**/*",
+        "vite.config.ts",
+        "tauri.conf.json",
+        "vue.config.js",
+        "next.config.js",
+        ".env*",
+        "tsconfig.json"
+      ],
+      "env": [
+        "NODE_ENV",
+        "VITE_*",
+        "TAURI_*"
+      ]
     },
     "build": {
+      "cache": true,
       "dependsOn": ["^build"],
       "outputs": [
         "dist/**",
         "build/**",
         "out/**",
-        "**/src-tauri/target/release/bundle/**"
+        "**/src-tauri/target/release/bundle/**",
+        ".next/**",
+        "!.next/cache/**"
       ],
-      "inputs": ["src/**/*", "vite.config.ts", "tauri.conf.json"]
+      "inputs": [
+        "src/**/*",
+        "vite.config.ts",
+        "tauri.conf.json",
+        "vue.config.js",
+        "next.config.js",
+        ".env*",
+        "tsconfig.json",
+        "package.json",
+        "!src/**/*.test.{ts,tsx,js,jsx}",
+        "!src/**/*.stories.{ts,tsx,js,jsx}",
+        "!**/__tests__/**",
+        "!**/__mocks__/**"
+      ],
+      "env": [
+        "NODE_ENV",
+        "VITE_*",
+        "TAURI_*"
+      ]
     },
     "lint": {
-      "inputs": ["src/**/*", ".eslintrc.js"]
+      "cache": true,
+      "inputs": [
+        "src/**/*",
+        ".eslintrc.js",
+        ".eslintrc.json",
+        "eslint.config.js",
+        ".stylelintrc.json",
+        ".prettierrc.json",
+        "tsconfig.json",
+        "package.json"
+      ],
+      "outputs": []
+    },
+    "lint:fix": {
+      "cache": false,
+      "inputs": [
+        "src/**/*",
+        ".eslintrc.js",
+        ".eslintrc.json",
+        "eslint.config.js",
+        ".stylelintrc.json",
+        ".prettierrc.json",
+        "tsconfig.json"
+      ],
+      "outputs": []
     },
     "test": {
+      "cache": true,
       "dependsOn": ["^build"],
-      "outputs": ["coverage/**"]
+      "outputs": [
+        "coverage/**",
+        "**/junit.xml"
+      ],
+      "inputs": [
+        "src/**/*.test.{ts,tsx,js,jsx}",
+        "**/__tests__/**",
+        "**/__mocks__/**",
+        "jest.config.js",
+        "vitest.config.ts",
+        "tsconfig.json",
+        "package.json"
+      ],
+      "env": [
+        "NODE_ENV",
+        "TEST_*"
+      ]
+    },
+    "test:watch": {
+      "cache": false,
+      "persistent": true,
+      "inputs": [
+        "src/**/*.test.{ts,tsx,js,jsx}",
+        "**/__tests__/**",
+        "**/__mocks__/**",
+        "jest.config.js",
+        "vitest.config.ts",
+        "tsconfig.json"
+      ],
+      "env": [
+        "NODE_ENV",
+        "TEST_*"
+      ]
     },
     "clean": {
-      "cache": false
+      "cache": false,
+      "dependsOn": []
+    },
+    "format": {
+      "cache": false,
+      "inputs": [
+        "src/**/*",
+        ".prettierrc.json",
+        ".prettierignore"
+      ],
+      "outputs": []
     }
   }
 }

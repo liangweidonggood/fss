@@ -10,7 +10,11 @@
     "eslint:check": "eslint .",
     "eslint": "eslint . --fix",
     "stylelint:check": "stylelint \"**/*.{css,scss,less}\"",
-    "stylelint": "stylelint \"**/*.{css,scss,less}\" --fix"
+    "stylelint": "stylelint \"**/*.{css,scss,less}\" --fix",
+    "lint": "eslint . && stylelint \"**/*.{css,scss,less}\"",
+    "lint:fix": "eslint . --fix && stylelint \"**/*.{css,scss,less}\" --fix",
+    "turbo:lint": "turbo run lint",
+    "turbo:lint:fix": "turbo run lint:fix"
   },
   "keywords": [
     "fss",
@@ -42,6 +46,7 @@
     "stylelint-config-standard": "^39.0.1",
     "stylelint-less": "^3.0.1",
     "stylelint-scss": "^6.13.0",
+    "turbo": "^2.7.2",
     "typescript-eslint": "^8.50.1"
   },
   "lint-staged": {
