@@ -50,8 +50,13 @@
     "typescript-eslint": "^8.50.1"
   },
   "lint-staged": {
-    "**/*.{js,ts,jsx,tsx,css,scss,less}": [
-      "pnpm turbo:lint"
+    "**/*.{js,ts,jsx,tsx}": [
+      "pnpm eslint:check",
+      "pnpm format:check"
+    ],
+    "**/*.{css,scss,less}": [
+      "pnpm stylelint:check",
+      "pnpm format:check"
     ]
   }
 }
