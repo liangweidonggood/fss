@@ -16,3 +16,8 @@ createRoot(document.getElementById('root')!).render(
     </ConfigProvider>
   </StrictMode>,
 )
+// 渲染后关闭loading效果
+const firstElement = document.getElementById('first')
+if (firstElement && firstElement.style?.display !== 'none') {
+  firstElement.style.display = 'none'
+}

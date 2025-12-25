@@ -19,7 +19,6 @@ package-lock.json
 yarn.lock
 
 # 静态资源
-public/
 assets/
 *.png
 *.jpg

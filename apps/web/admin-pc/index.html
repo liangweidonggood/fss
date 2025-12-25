@@ -1,13 +1,29 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>admin-pc</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="/loading.css" />
+    <title>后台管理系统</title>
+    <!-- IE不支持提示 -->
+    <script>
+        if (/*@cc_on!@*/!!window.MSInputMethodContext && !!document.documentMode) {
+            document.body.innerHTML = '<div style="text-align:center;margin-top:50px;font-family:Arial,sans-serif;"><h1>不支持 Internet Explorer</h1><p>本应用不支持 Internet Explorer 浏览器，请使用现代浏览器（如 Chrome、Firefox、Edge 等）访问。</p></div>';
+        }
+    </script>
+</head>
+<body>
+<div id="first" class="ma-msk-loading">
+    <div class="ma-line-scale">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+<div id="root"></div>
+<script type="module" src="/src/main.tsx"></script>
+</body>
 </html>

@@ -52,7 +52,6 @@
     "*.jpeg",
     "*.gif",
     "*.ico",
-    "public/**/*",
     "assets/**/*"
   ]
 }
