@@ -1,0 +1,74 @@
+# Git
+.git/
+
+# IDE & System
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Node.js / React / Frontend
+node_modules/
+dist/
+build/
+coverage/
+.next/
+out/
+.turbo/
+yarn-error.log
+npm-debug.log
+pnpm-debug.log
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+.venv/
+env/
+.env
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.tox/
+build/
+dist/
+
+# Rust
+target/
+**/*.rs.bk
+Cargo.lock
+
+# Go
+bin/
+pkg/
+vendor/
+*.exe
+*.test
+go.sum
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+target/
+.gradle/
+build/
+.mvn/
+.settings/
+.classpath
+.project
+
+# Logs & Temp
+*.log
+tmp/
+temp/

@@ -6,7 +6,7 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 // 你原有导出方式（完全保留，使用 tseslint.config()，无报错）
 export default tseslint.config(
-  { ignores: ['dist'] }, // 你原有忽略配置
+  { ignores: ['dist', '*/target', '**/target/**'] }, // 你原有忽略配置
   {
     // 你原有 extends（仅配置对象，无字符串，合法可用）
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
