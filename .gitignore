@@ -47,3 +47,4 @@ go.sum
 **/java/.idea
 
 
+/backend/admin-java/.gradle/
