@@ -2,13 +2,11 @@ plugins {
     id("java-library")
 }
 dependencies{
-
-
-    // 添加Redis和缓存相关依赖
-    implementation("org.springframework.boot:spring-boot-starter-data-redis")
-    implementation("org.springframework.boot:spring-boot-starter-cache")
-    implementation("org.apache.commons:commons-lang3")
-    implementation("com.google.guava:guava")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("com.mybatis-flex:mybatis-flex-spring-boot3-starter")
+    implementation("com.mybatis-flex:mybatis-flex-codegen")
+    implementation("com.zaxxer:HikariCP")
+    implementation("org.postgresql:postgresql")
 
     //模块依赖
     implementation(project(":admin-common"))
