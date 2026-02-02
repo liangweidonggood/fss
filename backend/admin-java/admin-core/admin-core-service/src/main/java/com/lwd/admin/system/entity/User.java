@@ -1,9 +1,9 @@
-package com.lwd.admin.entity;
+package com.lwd.admin.system.entity;
 
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import java.io.Serial;
 
@@ -13,10 +13,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 用户表 实体类。
+ *  实体类。
  *
  * @author lwd
- * @since 2026-01-30
+ * @since 2026-02-02
  */
 @Data
 @Builder
@@ -34,7 +34,7 @@ public class User implements Serializable {
     /**
      * 创建时间
      */
-    private Timestamp createdDate;
+    private LocalDateTime createdDate;
 
     /**
      * 创建人id
@@ -44,7 +44,7 @@ public class User implements Serializable {
     /**
      * 修改时间
      */
-    private Timestamp updatedDate;
+    private LocalDateTime updatedDate;
 
     /**
      * 修改人id

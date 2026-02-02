@@ -1,13 +1,13 @@
-package com.lwd.admin.service;
+package com.lwd.admin.system.service;
 
 import com.mybatisflex.core.service.IService;
-import com.lwd.admin.entity.User;
+import com.lwd.admin.system.entity.User;
 
 /**
- * 用户表 服务层。
+ *  服务层。
  *
  * @author lwd
- * @since 2026-01-30
+ * @since 2026-02-02
  */
 public interface UserService extends IService<User> {
 

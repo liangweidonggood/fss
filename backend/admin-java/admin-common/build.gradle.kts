@@ -5,6 +5,8 @@ dependencies{
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-cache")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation("com.mybatis-flex:mybatis-flex-spring-boot3-starter")
     implementation("com.github.ben-manes.caffeine:caffeine")
     implementation("io.jsonwebtoken:jjwt-api")
     implementation("io.jsonwebtoken:jjwt-impl")

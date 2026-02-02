@@ -1,101 +1,112 @@
 package com.lwd.admin.util;
 
 import com.mybatisflex.codegen.Generator;
-import com.mybatisflex.codegen.config.ColumnConfig;
 import com.mybatisflex.codegen.config.GlobalConfig;
+import com.mybatisflex.codegen.config.TableDefConfig;
+import com.mybatisflex.codegen.dialect.JdbcTypeMapping;
+import com.mybatisflex.codegen.template.impl.EnjoyTemplate;
+import com.mybatisflex.spring.service.impl.CacheableServiceImpl;
 import com.zaxxer.hikari.HikariDataSource;
+
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Set;
 
 /**
  * mybatis-flex 代码生成
  * <a href="https://mybatis-flex.com/zh/others/codegen.html">官方文档</a>
+ *
  * @author lwd
  */
 public class Codegen {
     public static void main(String[] args) {
         HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setJdbcUrl("jdbc:postgresql://localhost:5432/postgres?currentSchema=cicp_admin");
+        dataSource.setJdbcUrl("jdbc:postgresql://localhost:5432/postgres?currentSchema=cicp_admin&useInformationSchema=true");
         dataSource.setUsername("postgres");
         dataSource.setPassword("1234");
-        //创建配置内容，两种风格都可以。
-        GlobalConfig globalConfig = createGlobalConfigUseStyle1();
-        //通过 datasource 和 globalConfig 创建代码生成器
+        registerPostgreSqlDateTypeMapping();
+        String projectModulePath = "D:/workspace/github/fss/backend/admin-java/admin-core/admin-core-service";
+        String basePackage = "com.lwd.admin.system";
+        String tablePrefix = "auth_";
+        Set<String> generateTable = Set.of("auth_user");
+        GlobalConfig globalConfig = createGlobalConfig(projectModulePath, basePackage, tablePrefix, generateTable);
         Generator generator = new Generator(dataSource, globalConfig);
-        //生成代码
         generator.generate();
     }
+
     /**
      * 创建配置内容
-     *
      */
-    public static GlobalConfig createGlobalConfigUseStyle1() {
+    public static GlobalConfig createGlobalConfig(String projectModulePath, String basePackage, String tablePrefix, Set<String> generateTable) {
+        String dirSplit = "/";
+        String sourceDir = projectModulePath + "/src/main/java";
+        String mapperXmlBasePath = projectModulePath + "/src/main/resources/mapper";
+        String mapperXmlPath = mapperXmlBasePath + dirSplit + basePackage.replace(".", "/");
         //创建配置内容
         GlobalConfig globalConfig = new GlobalConfig();
-
-        //设置源代码目录
-        globalConfig.setSourceDir("D:\\workspace\\github\\fss\\backend\\admin-java\\admin-core\\admin-core-service\\src\\main\\java");
-
-        //设置根包
-        globalConfig.setBasePackage("com.lwd.admin");
-
-        //设置表前缀和只生成哪些表
-        globalConfig.setTablePrefix("auth_");
-        globalConfig.setGenerateTable("auth_user");
-
-        //设置生成 entity 并启用 Lombok
-        globalConfig.setEntityGenerateEnable(true);
-        globalConfig.setEntityWithLombok(true);
-        //设置项目的JDK版本，项目的JDK为14及以上时建议设置该项，小于14则可以不设置
-        globalConfig.setEntityJdkVersion(21);
-
-        //设置生成 mapper
-        globalConfig.setMapperGenerateEnable(true);
-
-        //启用 Service 生成
-        globalConfig.enableService();
-        //启用 ServiceImpl 生成
-        globalConfig.enableServiceImpl();
-        //启用 Controller 生成
-        globalConfig.enableController();
-        //启用 TableDef 生成
-        globalConfig.enableTableDef();
-        //启用 MapperXml 生成
-        globalConfig.enableMapperXml();
-        globalConfig.setMapperXmlFilePrefix("com.lwd.admin");
-        globalConfig.setMapperXmlPath("D:\\workspace\\github\\fss\\backend\\admin-java\\admin-core\\admin-core-service\\src\\main\\resources");
-
-
-        return globalConfig;
-    }
-
-    public static GlobalConfig createGlobalConfigUseStyle2() {
-        //创建配置内容
-        GlobalConfig globalConfig = new GlobalConfig();
-
         //设置根包
         globalConfig.getPackageConfig()
-                .setBasePackage("com.test");
+                .setSourceDir(sourceDir)
+                .setBasePackage(basePackage)
+        ;
 
-        //设置表前缀和只生成哪些表，setGenerateTable 未配置时，生成所有表
+        //设置StrategyConfig
         globalConfig.getStrategyConfig()
-                .setTablePrefix("tb_")
-                .setGenerateTable("tb_account", "tb_account_session");
+                .setTablePrefix(tablePrefix)
+                .setGenerateTable(generateTable.toArray(new String[0]))
+        ;
 
         //设置生成 entity 并启用 Lombok
         globalConfig.enableEntity()
                 .setWithLombok(true)
-                .setJdkVersion(17);
+                .setJdkVersion(21)
+                .setOverwriteEnable(true)
+        ;
 
         //设置生成 mapper
         globalConfig.enableMapper();
 
-        //可以单独配置某个列
-        ColumnConfig columnConfig = new ColumnConfig();
-        columnConfig.setColumnName("tenant_id");
-        columnConfig.setLarge(true);
-        columnConfig.setVersion(true);
-        globalConfig.getStrategyConfig()
-                .setColumnConfig("tb_account", columnConfig);
+        //启用 Service 生成
+        globalConfig.enableService()
+                .setOverwriteEnable(true)
+        ;
+
+        //启用 ServiceImpl 生成
+        globalConfig.enableServiceImpl()
+                .setSuperClass(CacheableServiceImpl.class)
+                .setCacheExample(true)
+                .setOverwriteEnable(true)
+        ;
+
+        //启用 Controller 生成
+        globalConfig.enableController();
+
+        //启用 TableDef 生成
+        globalConfig.enableTableDef()
+                .setOverwriteEnable(true)
+        ;
+
+        //启用 MapperXml 生成
+        globalConfig.enableMapperXml();
+        globalConfig.setMapperXmlPath(mapperXmlPath);
+
+        //设置模板
+        globalConfig.getTemplateConfig()
+                .setTemplate(new EnjoyTemplate())
+                .setController(projectModulePath + "/src/main/resources/templates/controller.tpl")
+                .setTableDef(projectModulePath + "/src/main/resources/templates/tableDef.tpl")
+        ;
 
         return globalConfig;
+    }
+
+    private static void registerPostgreSqlDateTypeMapping() {
+        JdbcTypeMapping.registerMapping(Date.class, LocalDate.class);
+        JdbcTypeMapping.registerMapping(Time.class, LocalTime.class);
+        JdbcTypeMapping.registerMapping(Timestamp.class, LocalDateTime.class);
     }
 }

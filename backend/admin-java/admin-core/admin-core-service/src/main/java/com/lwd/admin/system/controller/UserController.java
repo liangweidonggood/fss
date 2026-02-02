@@ -1,6 +1,7 @@
-package com.lwd.admin.controller;
+package com.lwd.admin.system.controller;
 
 import com.mybatisflex.core.paginate.Page;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,9 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.beans.factory.annotation.Autowired;
-import com.lwd.admin.entity.User;
-import com.lwd.admin.service.UserService;
+import com.lwd.admin.system.entity.User;
+import com.lwd.admin.system.service.UserService;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
@@ -18,14 +18,14 @@ import java.util.List;
  * 用户表 控制层。
  *
  * @author lwd
- * @since 2026-01-30
+ * @since 2026-02-02
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     /**
      * 保存用户表。
