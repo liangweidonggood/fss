@@ -7,7 +7,7 @@ import com.lwd.admin.system.entity.User;
  *  服务层。
  *
  * @author lwd
- * @since 2026-02-02
+ * @since 2026-02-03
  */
 public interface UserService extends IService<User> {
 

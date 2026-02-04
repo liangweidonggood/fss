@@ -9,7 +9,7 @@ import java.io.Serial;
  *  表定义层。
  *
  * @author lwd
- * @since 2026-02-02
+ * @since 2026-02-03
  */
 public class UserTableDef extends TableDef {
 
@@ -19,7 +19,7 @@ public class UserTableDef extends TableDef {
     private static final String TABLE_NAME = "auth_user";
 
     /**
-     * 
+     * 表说明: 
      */
     public static final UserTableDef USER = new UserTableDef();
 
@@ -77,6 +77,7 @@ public class UserTableDef extends TableDef {
     private UserTableDef(String schema, String name, String alisa) {
         super(schema, name, alisa);
     }
+
     @Override
     public UserTableDef as(String alias) {
         String key = getNameWithSchema() + "." + alias;

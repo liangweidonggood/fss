@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
  *  实体类。
  *
  * @author lwd
- * @since 2026-02-02
+ * @since 2026-02-03
  */
 @Data
 @Builder

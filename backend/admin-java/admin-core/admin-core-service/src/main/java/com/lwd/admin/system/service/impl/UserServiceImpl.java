@@ -1,29 +1,29 @@
 package com.lwd.admin.system.service.impl;
 
-import com.mybatisflex.spring.service.impl.CacheableServiceImpl;
 import com.lwd.admin.system.entity.User;
 import com.lwd.admin.system.mapper.UserMapper;
 import com.lwd.admin.system.service.UserService;
-import org.springframework.stereotype.Service;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
-import org.springframework.cache.annotation.Cacheable;
+import com.mybatisflex.spring.service.impl.CacheableServiceImpl;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
 /**
- *  服务层实现。
+ * 服务层实现。
  *
  * @author lwd
- * @since 2026-02-02
+ * @since 2026-02-03
  */
 @Service
 @CacheConfig(cacheNames = "user")
-public class UserServiceImpl extends CacheableServiceImpl<UserMapper, User>  implements UserService{
+public class UserServiceImpl extends CacheableServiceImpl<UserMapper, User> implements UserService {
 
 
     @Override
@@ -117,7 +117,7 @@ public class UserServiceImpl extends CacheableServiceImpl<UserMapper, User>  imp
     }
 
     /**
-     * @deprecated 无法通过注解进行缓存操作。
+     * 无法通过注解进行缓存操作。
      */
     @Override
     @Deprecated

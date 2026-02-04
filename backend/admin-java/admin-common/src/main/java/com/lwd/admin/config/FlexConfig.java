@@ -7,7 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * flex 配置
+ * Flex 配置.
+ *
  * @author lwd
  */
 @Slf4j
@@ -16,12 +17,10 @@ public class FlexConfig implements ConfigurationCustomizer {
 
     @Override
     public void customize(FlexConfiguration flexConfiguration) {
-        //开启审计功能
+        // 开启审计功能
         AuditManager.setAuditEnable(true);
-        //设置 SQL 审计收集器
-        AuditManager.setMessageCollector(auditMessage ->
-                log.info("sql:{},exec:{}ms", auditMessage.getFullSql()
-                        , auditMessage.getElapsedTime())
-        );
+        // 设置 SQL 审计收集器
+        AuditManager.setMessageCollector(auditMessage -> log.info("sql:{},exec:{}ms", auditMessage.getFullSql(),
+                auditMessage.getElapsedTime()));
     }
 }

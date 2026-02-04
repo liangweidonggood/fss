@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.lwd.admin.system.entity.User;
 import com.lwd.admin.system.service.UserService;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
 
 /**
- * 用户表 控制层。
+ * 用户表 控制层.
  *
  * @author lwd
  * @since 2026-02-02
@@ -28,7 +29,7 @@ public class UserController {
     private final UserService userService;
 
     /**
-     * 保存用户表。
+     * 保存用户表.
      *
      * @param user 用户表
      * @return {@code true} 保存成功，{@code false} 保存失败

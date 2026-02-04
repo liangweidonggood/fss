@@ -30,7 +30,7 @@ public class #(tableDefClassName) extends TableDef {
     private static final String TABLE_NAME = "#(table.name)";
 
     /**
-     * #(table.getComment())
+     * 表说明: #(table.getComment())
      */
     public static final #(tableDefClassName) #(tableDefConfig.buildFieldName(table.buildEntityClassName() + tableDefConfig.instanceSuffix)) = new #(tableDefClassName)();
 
@@ -56,6 +56,7 @@ public class #(tableDefClassName) extends TableDef {
     private #(tableDefClassName)(String schema, String name, String alisa) {
         super(schema, name, alisa);
     }
+
     @Override
     public #(tableDefClassName) as(String alias) {
         String key = getNameWithSchema() + "." + alias;

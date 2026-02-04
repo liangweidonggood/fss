@@ -4,7 +4,8 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Redis 缓存配置
+ * Redis 缓存配置.
+ *
  * @author lwd
  */
 @EnableCaching

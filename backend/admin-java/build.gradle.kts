@@ -1,6 +1,8 @@
 plugins {
     id("org.springframework.boot") version "3.3.13"
     id("io.spring.dependency-management") version "1.1.7"
+    checkstyle
+    pmd
 }
 allprojects {
     repositories {
@@ -15,9 +17,29 @@ allprojects {
         gradlePluginPortal()
     }
 }
+val fssDir: File = rootProject.projectDir.parentFile!!.parentFile!!
 subprojects {
     apply(plugin = "org.springframework.boot")
     apply(plugin = "io.spring.dependency-management")
+    apply(plugin = "checkstyle")
+    apply(plugin = "pmd")
+    configure<CheckstyleExtension> {
+        toolVersion = "13.1.0"
+        isIgnoreFailures = false
+        isShowViolations = true
+        maxWarnings = 0
+        maxErrors = 0
+        configFile = fssDir.resolve("global/config/checkstyle/checkstyle.xml")
+    }
+    configure<PmdExtension> {
+        toolVersion = "7.21.0"
+        isConsoleOutput = true
+        isIgnoreFailures = false
+        ruleSets = listOf()
+        ruleSetFiles = files(
+            fssDir.resolve("global/config/pmd/ruleset.xml")
+        )
+    }
     dependencyManagement {
         imports {
             mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
@@ -45,4 +67,12 @@ subprojects {
 
         }
     }
+}
+tasks.register("codeCheck") {
+    group = "quality"
+    description = "执行全量代码质量检查(Checkstyle + PMD)"
+    dependsOn(
+        subprojects.map { it.tasks.withType<Checkstyle>() },
+        subprojects.map { it.tasks.withType<Pmd>() }
+    )
 }
