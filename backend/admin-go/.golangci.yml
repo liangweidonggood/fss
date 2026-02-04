@@ -1,0 +1,60 @@
+version: "2"
+
+linters:
+  # 可选值：standard / all / none / fast
+  default: standard
+  # 禁用无实用价值、易误报的单个 linter
+  disable:
+    - dogsled
+  # 排除规则
+  exclusions:
+    # 兼容更多生成文件，减少误报
+    generated: lax
+    # 关闭未使用排除规则的告警
+    warn-unused: true
+
+
+# 格式化工具配置
+formatters:
+  # 仅启用官方推荐的基础格式化工具
+  enable:
+    - gofmt
+    - goimports
+
+
+# 问题报告配置
+issues:
+  # 单个 linter 最大问题数，0 表示禁用限制
+  max-issues-per-linter: 0
+  # 关闭自动修复
+  fix: false
+
+# 输出配置
+output:
+  # 文本格式输出 带颜色和行号
+  formats:
+    text:
+      path: stdout
+      colors: true
+  # 按 linter 和文件排序输出，便于查看
+  sort-order:
+    - linter
+    - file
+
+
+# 运行配置
+run:
+  # 检测超时时间
+  timeout: 5m
+  # 相对路径解析模式
+  relative-path-mode: gomod
+  # 避免检测过程中修改依赖
+  modules-download-mode: readonly
+  # 允许多个实例并行运行，无需等待文件锁，提升灵活性
+  allow-parallel-runners: true
+  # 不包含测试文件
+  tests: false
+
+# 问题严重程度配置
+severity:
+  default: error

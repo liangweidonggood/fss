@@ -15,7 +15,8 @@
     "lint:fix": "eslint . --fix && stylelint \"**/*.{css,scss,less}\" --fix && prettier --write .",
     "turbo:lint": "turbo run lint",
     "turbo:lint:fix": "turbo run lint:fix",
-    "admin-java:check": "cd backend/admin-java && gradlew compileJava && gradlew codeCheck && true"
+    "admin-java:check": "cd backend/admin-java && gradlew compileJava && gradlew codeCheck && true",
+    "admin-go:check": "cd backend/admin-go && golangci-lint run"
   },
   "keywords": [
     "fss",
@@ -61,6 +62,9 @@
     ],
     "**/*.java": [
       "pnpm admin-java:check"
+    ],
+    "**/*.go": [
+      "pnpm admin-go:check"
     ]
   }
 }
