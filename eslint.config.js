@@ -1,27 +1,22 @@
-// 你原有导入依赖（完全保留，未改动）
 import js from '@eslint/js'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
-// 你原有导出方式（完全保留，使用 tseslint.config()，无报错）
 export default tseslint.config(
-  { ignores: ['dist', '*/target', '**/target/**'] }, // 你原有忽略配置
+  { ignores: ['dist', '*/target', '**/target/**'] },
   {
-    // 你原有 extends（仅配置对象，无字符串，合法可用）
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ['**/*.{ts,tsx}'], // 你原有文件类型
+    files: ['**/*.{ts,tsx}'],
     languageOptions: {
-      ecmaVersion: 2020, // 你原有 ES 版本
-      globals: globals.browser, // 你原有全局变量
+      ecmaVersion: 2020,
+      globals: globals.browser,
     },
     plugins: {
-      // 你原有插件配置，完全保留
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
     },
     rules: {
-      // 你原有所有规则，一字未改，完全保留
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': [
         'warn',

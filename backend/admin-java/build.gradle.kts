@@ -18,11 +18,33 @@ allprojects {
     }
 }
 val fssDir: File = rootProject.projectDir.parentFile!!.parentFile!!
+fun getStagedJavaFiles(moduleDir: File? = null): List<String> {
+    try {
+        val process = ProcessBuilder(
+            "git", "diff", "--cached", "--name-only", "--diff-filter=ACM", "--", "*.java"
+        ).directory(fssDir)
+            .redirectErrorStream(true)
+            .start()
+        val isCompleted = process.waitFor(10, TimeUnit.SECONDS)
+        if (!isCompleted) {
+            process.destroy()
+            return emptyList()
+        }
+        val globalStagedAbsolutePaths  = process.inputStream.bufferedReader().readLines()
+            .filter { it.endsWith(".java") && it.isNotEmpty() }
+            .map { File(fssDir, it).absolutePath }
+            .filter { File(it).exists() }
+        val moduleAbsolutePath = moduleDir!!.absolutePath
+        return globalStagedAbsolutePaths .filter { it.startsWith(moduleAbsolutePath) }
+    } catch (_: Exception) {
+        return emptyList()
+    }
+}
 subprojects {
-    apply(plugin = "org.springframework.boot")
-    apply(plugin = "io.spring.dependency-management")
-    apply(plugin = "checkstyle")
-    apply(plugin = "pmd")
+    pluginManager.apply("org.springframework.boot")
+    pluginManager.apply("io.spring.dependency-management")
+    pluginManager.apply("checkstyle")
+    pluginManager.apply("pmd")
     configure<CheckstyleExtension> {
         toolVersion = "13.1.0"
         isIgnoreFailures = false
@@ -39,6 +61,32 @@ subprojects {
         ruleSetFiles = files(
             fssDir.resolve("global/config/pmd/ruleset.xml")
         )
+    }
+    tasks.withType<Checkstyle> {
+        doFirst {
+            val isLintStaged = providers.gradleProperty("lintStaged").orElse("false").get().toBoolean()
+            val stagedFiles = getStagedJavaFiles(projectDir)
+            if (isLintStaged && stagedFiles.isNotEmpty()) {
+                logger.lifecycle("【增量检查】${project.name} - Checkstyle 扫描 ${stagedFiles.size} 个专属暂存区 Java 文件")
+                source = project.files(stagedFiles).asFileTree
+            } else {
+                logger.lifecycle("【全量检查】${project.name} - Checkstyle 扫描自身源码文件")
+                source = project.fileTree(projectDir) { include("src/*/java/**/*.java") }
+            }
+        }
+    }
+    tasks.withType<Pmd> {
+        doFirst {
+            val isLintStaged = providers.gradleProperty("lintStaged").orElse("false").get().toBoolean()
+            val stagedFiles = getStagedJavaFiles(projectDir)
+            if (isLintStaged && stagedFiles.isNotEmpty()) {
+                logger.lifecycle("【增量检查】${project.name} - PMD 扫描 ${stagedFiles.size} 个专属暂存区 Java 文件")
+                source = project.files(stagedFiles).asFileTree
+            } else {
+                logger.lifecycle("【全量检查】${project.name} - PMD 扫描自身源码文件")
+                source = project.fileTree(projectDir) { include("src/*/java/**/*.java") }
+            }
+        }
     }
     dependencyManagement {
         imports {
