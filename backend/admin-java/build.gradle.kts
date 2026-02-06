@@ -1,3 +1,30 @@
+
+// ==========================================================
+// 配置缓存兼容的 Git 逻辑
+// ==========================================================
+abstract class StagedFilesValueSource : ValueSource<List<String>, StagedFilesValueSource.Parameters> {
+    interface Parameters : ValueSourceParameters {
+        val rootDir: DirectoryProperty
+        val moduleDir: DirectoryProperty
+    }
+    override fun obtain(): List<String>? {
+        val root = parameters.rootDir.get().asFile
+        val modulePath = parameters.moduleDir.get().asFile.absolutePath
+        return try {
+            val process = ProcessBuilder("git", "diff", "--cached", "--name-only", "--diff-filter=ACM", "--", "*.java")
+                .directory(root)
+                .start()
+            val isCompleted = process.waitFor(10, TimeUnit.SECONDS)
+            if (!isCompleted) return emptyList()
+            process.inputStream.bufferedReader().readLines()
+                .filter { it.isNotBlank() }
+                .map { File(root, it).absolutePath }
+                .filter { it.startsWith(modulePath) && File(it).exists() }
+        } catch (_: Exception) {
+            null
+        }
+    }
+}
 plugins {
     id("org.springframework.boot") version "3.3.13"
     id("io.spring.dependency-management") version "1.1.7"
@@ -17,29 +44,8 @@ allprojects {
         gradlePluginPortal()
     }
 }
-val fssDir: File = rootProject.projectDir.parentFile!!.parentFile!!
-fun getStagedJavaFiles(moduleDir: File? = null): List<String> {
-    try {
-        val process = ProcessBuilder(
-            "git", "diff", "--cached", "--name-only", "--diff-filter=ACM", "--", "*.java"
-        ).directory(fssDir)
-            .redirectErrorStream(true)
-            .start()
-        val isCompleted = process.waitFor(10, TimeUnit.SECONDS)
-        if (!isCompleted) {
-            process.destroy()
-            return emptyList()
-        }
-        val globalStagedAbsolutePaths  = process.inputStream.bufferedReader().readLines()
-            .filter { it.endsWith(".java") && it.isNotEmpty() }
-            .map { File(fssDir, it).absolutePath }
-            .filter { File(it).exists() }
-        val moduleAbsolutePath = moduleDir!!.absolutePath
-        return globalStagedAbsolutePaths .filter { it.startsWith(moduleAbsolutePath) }
-    } catch (_: Exception) {
-        return emptyList()
-    }
-}
+val fssDir: File = rootProject.projectDir.parentFile?.parentFile ?: rootProject.projectDir
+
 subprojects {
     pluginManager.apply("org.springframework.boot")
     pluginManager.apply("io.spring.dependency-management")
@@ -62,30 +68,35 @@ subprojects {
             fssDir.resolve("global/config/pmd/ruleset.xml")
         )
     }
-    tasks.withType<Checkstyle> {
-        doFirst {
-            val isLintStaged = providers.gradleProperty("lintStaged").orElse("false").get().toBoolean()
-            val stagedFiles = getStagedJavaFiles(projectDir)
-            if (isLintStaged && stagedFiles.isNotEmpty()) {
-                logger.lifecycle("【增量检查】${project.name} - Checkstyle 扫描 ${stagedFiles.size} 个专属暂存区 Java 文件")
-                source = project.files(stagedFiles).asFileTree
-            } else {
-                logger.lifecycle("【全量检查】${project.name} - Checkstyle 扫描自身源码文件")
-                source = project.fileTree(projectDir) { include("src/*/java/**/*.java") }
-            }
-        }
+    val currentModuleName = name
+    val isLintStagedProvider = providers.gradleProperty("lintStaged").map { it.toBoolean() }.orElse(false)
+    val stagedFilesProvider = providers.of(StagedFilesValueSource::class) {
+        parameters.rootDir.set(fssDir)
+        parameters.moduleDir.set(projectDir)
     }
-    tasks.withType<Pmd> {
-        doFirst {
-            val isLintStaged = providers.gradleProperty("lintStaged").orElse("false").get().toBoolean()
-            val stagedFiles = getStagedJavaFiles(projectDir)
-            if (isLintStaged && stagedFiles.isNotEmpty()) {
-                logger.lifecycle("【增量检查】${project.name} - PMD 扫描 ${stagedFiles.size} 个专属暂存区 Java 文件")
-                source = project.files(stagedFiles).asFileTree
-            } else {
-                logger.lifecycle("【全量检查】${project.name} - PMD 扫描自身源码文件")
-                source = project.fileTree(projectDir) { include("src/*/java/**/*.java") }
+    tasks.withType<SourceTask>().configureEach {
+        if (this is Checkstyle || this is Pmd) {
+            val taskType = if (this is Checkstyle) "Checkstyle" else "PMD"
+            // 使用 Provider 延迟计算 source，避免配置缓存失效
+            val dynamicSource = isLintStagedProvider.flatMap { isStaged ->
+                if (isStaged) {
+                    stagedFilesProvider.map { files ->
+                        if (files.isNotEmpty()) {
+                            logger.lifecycle("【增量检查】$currentModuleName - $taskType 扫描 ${files.size} 个暂存文件")
+                            project.files(files).asFileTree
+                        } else {
+                            project.files().asFileTree
+                        }
+                    }
+                } else {
+                    provider {
+                        logger.lifecycle("【全量检查】$currentModuleName - $taskType 扫描全量源码")
+                        project.fileTree(projectDir) { include("src/*/java/**/*.java") }
+                    }
+                }
             }
+            // 覆盖默认 source
+            setSource(dynamicSource)
         }
     }
     dependencyManagement {
@@ -112,7 +123,9 @@ subprojects {
             dependency("io.jsonwebtoken:jjwt-jackson:0.13.0")
             //文档
             dependency("com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter:4.5.0")
-
+            //数据库迁移
+            dependency("org.flywaydb:flyway-core:12.0.0")
+            dependency("org.flywaydb:flyway-database-postgresql:12.0.0")
         }
     }
 }

@@ -8,6 +8,7 @@ dependencies{
     implementation("com.mybatis-flex:mybatis-flex-codegen")
     implementation("com.zaxxer:HikariCP")
     implementation("org.postgresql:postgresql")
+    implementation("org.flywaydb:flyway-core")
 
     //模块依赖
     implementation(project(":admin-common"))
@@ -18,6 +19,7 @@ dependencies{
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.projectlombok:lombok")
     testAnnotationProcessor("org.projectlombok:lombok")
+    runtimeOnly("org.flywaydb:flyway-database-postgresql")
 }
 
 tasks.bootJar{

@@ -43,6 +43,7 @@
     <!-- 3 设计 -->
     <rule ref="category/java/design.xml">
         <exclude name="UseUtilityClass"/>
+        <exclude name="UselessOverridingMethod"/>
     </rule>
     <rule ref="category/java/design.xml/TooManyMethods">
         <properties>

@@ -1,5 +1,6 @@
 package com.lwd.admin.util;
 
+import com.lwd.admin.base.BaseEntity;
 import com.mybatisflex.codegen.Generator;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.dialect.JdbcTypeMapping;
@@ -74,6 +75,7 @@ public class Codegen {
                     .setWithLombok(true)
                     .setJdkVersion(21)
                     .setOverwriteEnable(true)
+                    .setSuperClass(BaseEntity.class)
         ;
 
         // 设置生成 mapper
