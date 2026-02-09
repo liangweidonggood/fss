@@ -45,6 +45,9 @@ public class FlexConfig implements ConfigurationCustomizer {
         globalConfig.registerInsertListener(globalInsertListener, Object.class);
         globalConfig.registerUpdateListener(globalUpdateListener, Object.class);
         globalConfig.registerSetListener(new GlobalOnSetListener(), Object.class);
+
+        globalConfig.setDbType(DbType.POSTGRE_SQL);
+
         // 注册查询数据权限监听方言
         DialectFactory.registerDialect(DbType.POSTGRE_SQL, new DataAuthDialectImpl());
         // 开启审计功能

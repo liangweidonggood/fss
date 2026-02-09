@@ -49,6 +49,11 @@ spring:
     default-schema: fss_master
     baseline-on-migrate: true
 
+# MyBatis Flex 配置
+mybatis-flex:
+  configuration:
+    map-underscore-to-camel-case: true
+
 # springdoc-openapi项目配置
 springdoc:
   api-docs:
@@ -59,9 +64,20 @@ springdoc:
     - group: 'default'
       paths-to-match:
         - '/user/**'
+        - '/tenant/**'
+
+
 # knife4j的增强配置
 knife4j:
   enable: true
   setting:
     language: zh_cn
     swagger-model-name: 实体列表
+
+# 自定义配置
+custom-config:
+  multi-tenant:
+    enable: true
+    default-schema: fss_master
+    admin-address: 10.8.33.26
+    domain: lwd.com

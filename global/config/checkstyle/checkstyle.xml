@@ -89,7 +89,6 @@
             <property name="allowByTailComment" value="true"/>
             <property name="allowNonPrintableEscapes" value="true"/>
         </module>
-        <module name="AvoidStarImport"/>
         <module name="OneTopLevelClass"/>
         <module name="NoLineWrap">
             <property name="tokens" value="PACKAGE_DEF, IMPORT, STATIC_IMPORT"/>
@@ -203,7 +202,6 @@
         <module name="FallThrough"/>
         <module name="UpperEll"/>
         <module name="ModifierOrder"/>
-        <module name="TextBlockGoogleStyleFormatting"/>
         <!-- 'VARIABLE_DEF' 前只应有一个空行 -->
         <module name="EmptyLineSeparator">
             <property name="tokens"

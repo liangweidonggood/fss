@@ -3,8 +3,8 @@ package com.lwd.admin.util;
 import com.lwd.admin.base.BaseEntity;
 import com.mybatisflex.codegen.Generator;
 import com.mybatisflex.codegen.config.GlobalConfig;
+import com.mybatisflex.codegen.dialect.IDialect;
 import com.mybatisflex.codegen.dialect.JdbcTypeMapping;
-import com.mybatisflex.codegen.template.impl.EnjoyTemplate;
 import com.mybatisflex.spring.service.impl.CacheableServiceImpl;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +16,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Set;
+
+
 
 /**
  * mybatis-flex 代码生成
@@ -30,17 +32,17 @@ public class Codegen {
      */
     public static void main(String[] args) {
         try (HikariDataSource dataSource = new HikariDataSource()) {
-            dataSource.setJdbcUrl("jdbc:postgresql://localhost:5432/postgres?currentSchema=cicp_admin" +
+            dataSource.setJdbcUrl("jdbc:postgresql://localhost:5432/postgres?currentSchema=fss_master" +
                     "&useInformationSchema=true");
             dataSource.setUsername("postgres");
             dataSource.setPassword("1234");
             registerPostgreSqlDateTypeMapping();
             String projectModulePath = "D:/workspace/github/fss/backend/admin-java/admin-core/admin-core-service";
             String basePackage = "com.lwd.admin.system";
-            String tablePrefix = "auth_";
-            Set<String> generateTable = Set.of("auth_user");
+            String tablePrefix = "sys_";
+            Set<String> generateTable = Set.of("sys_tenant");
             GlobalConfig globalConfig = createGlobalConfig(projectModulePath, basePackage, tablePrefix, generateTable);
-            Generator generator = new Generator(dataSource, globalConfig);
+            Generator generator = new Generator(dataSource, globalConfig, IDialect.POSTGRESQL);
             generator.generate();
         } catch (Exception e) {
             log.error("代码生成异常", e);
@@ -79,11 +81,10 @@ public class Codegen {
         ;
 
         // 设置生成 mapper
-        globalConfig.enableMapper();
+        globalConfig.enableMapper().setOverwriteEnable(true);
 
         // 启用 Service 生成
-        globalConfig.enableService()
-                    .setOverwriteEnable(true);
+        globalConfig.enableService().setOverwriteEnable(true);
 
         // 启用 ServiceImpl 生成
         globalConfig.enableServiceImpl()
@@ -93,22 +94,12 @@ public class Codegen {
         ;
 
         // 启用 Controller 生成
-        globalConfig.enableController();
-
-        // 启用 TableDef 生成
-        globalConfig.enableTableDef()
-                    .setOverwriteEnable(true);
+        globalConfig.enableController().setOverwriteEnable(true);
 
         // 启用 MapperXml 生成
-        globalConfig.enableMapperXml();
+        globalConfig.enableMapperXml().setOverwriteEnable(true);
         globalConfig.setMapperXmlPath(mapperXmlPath);
 
-        // 设置模板
-        globalConfig.getTemplateConfig()
-                    .setTemplate(new EnjoyTemplate())
-                    .setController(projectModulePath + "/src" + "/main/resources/templates/controller.tpl")
-                    .setTableDef(projectModulePath + "/src/main/resources" + "/templates/tableDef.tpl")
-        ;
         return globalConfig;
     }
 

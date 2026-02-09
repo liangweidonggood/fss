@@ -42,7 +42,7 @@ public class #(tableDefClassName) extends TableDef {
     /**
      * 所有字段。
      */
-    public static final QueryColumn #(tableDefConfig.buildFieldName("allColumns")) = new QueryColumn(TABLE_NAME, "*");
+    public final QueryColumn #(tableDefConfig.buildFieldName("allColumns")) = new QueryColumn(TABLE_NAME, "*");
 
     /**
      * 默认字段，不包含逻辑删除或者 large 等字段。

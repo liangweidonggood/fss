@@ -5,8 +5,10 @@ package com.lwd.admin.config;
  *
  * @author lwd
  */
-public class SchemaContextHolder {
+public final class SchemaContextHolder {
     private static final ThreadLocal<String> SCHEMA_THREAD_LOCAL = new InheritableThreadLocal<>();
+
+    private SchemaContextHolder() {}
 
     /**
      * 设置当前schema

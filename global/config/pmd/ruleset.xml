@@ -11,6 +11,7 @@
     <!-- 1 最佳实践 -->
     <rule ref="category/java/bestpractices.xml">
         <exclude name="ImplicitFunctionalInterface"/>
+        <exclude name="GuardLogStatement"/>
     </rule>
     <!-- 2 代码风格 -->
     <rule ref="category/java/codestyle.xml">
@@ -19,6 +20,7 @@
         <exclude name="AtLeastOneConstructor"/>
         <exclude name="LinguisticNaming"/>
         <exclude name="UseShortArrayInitializer"/>
+        <exclude name="OnlyOneReturn"/>
     </rule>
     <rule ref="category/java/codestyle.xml/ShortClassName">
         <properties>

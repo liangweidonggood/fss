@@ -20,3 +20,4 @@ dependencies{
     testAnnotationProcessor("org.projectlombok:lombok")
     runtimeOnly("org.postgresql:postgresql")
 }
+

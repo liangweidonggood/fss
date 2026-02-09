@@ -1,7 +1,6 @@
 package com.lwd.admin.base;
 
 import lombok.Data;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -17,7 +16,6 @@ public class BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     private LocalDateTime createDateTime;
     private LocalDateTime updateDateTime;
-    private Long createUserId;
     private Long updateUserId;
     private Integer isDeleted;
     private Integer version;

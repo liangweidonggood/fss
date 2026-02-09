@@ -1,4 +1,3 @@
-
 // ==========================================================
 // 配置缓存兼容的 Git 逻辑
 // ==========================================================
@@ -6,21 +5,28 @@ abstract class StagedFilesValueSource : ValueSource<List<String>, StagedFilesVal
     interface Parameters : ValueSourceParameters {
         val rootDir: DirectoryProperty
         val moduleDir: DirectoryProperty
+        @get:InputFile
+        @get:Optional
+        val gitIndexFile: RegularFileProperty
     }
+
     override fun obtain(): List<String>? {
         val root = parameters.rootDir.get().asFile
         val modulePath = parameters.moduleDir.get().asFile.absolutePath
+
         return try {
             val process = ProcessBuilder("git", "diff", "--cached", "--name-only", "--diff-filter=ACM", "--", "*.java")
                 .directory(root)
                 .start()
+
             val isCompleted = process.waitFor(10, TimeUnit.SECONDS)
             if (!isCompleted) return emptyList()
+
             process.inputStream.bufferedReader().readLines()
                 .filter { it.isNotBlank() }
                 .map { File(root, it).absolutePath }
                 .filter { it.startsWith(modulePath) && File(it).exists() }
-        } catch (_: Exception) {
+        } catch (e: Exception) {
             null
         }
     }
@@ -51,6 +57,7 @@ subprojects {
     pluginManager.apply("io.spring.dependency-management")
     pluginManager.apply("checkstyle")
     pluginManager.apply("pmd")
+
     configure<CheckstyleExtension> {
         toolVersion = "13.1.0"
         isIgnoreFailures = false
@@ -68,34 +75,28 @@ subprojects {
             fssDir.resolve("global/config/pmd/ruleset.xml")
         )
     }
-    val currentModuleName = name
     val isLintStagedProvider = providers.gradleProperty("lintStaged").map { it.toBoolean() }.orElse(false)
     val stagedFilesProvider = providers.of(StagedFilesValueSource::class) {
         parameters.rootDir.set(fssDir)
         parameters.moduleDir.set(projectDir)
+        val indexFile = File(fssDir, ".git/index")
+        if (indexFile.exists()) {
+            parameters.gitIndexFile.set(indexFile)
+        }
     }
     tasks.withType<SourceTask>().configureEach {
         if (this is Checkstyle || this is Pmd) {
-            val taskType = if (this is Checkstyle) "Checkstyle" else "PMD"
-            // 使用 Provider 延迟计算 source，避免配置缓存失效
             val dynamicSource = isLintStagedProvider.flatMap { isStaged ->
                 if (isStaged) {
-                    stagedFilesProvider.map { files ->
-                        if (files.isNotEmpty()) {
-                            logger.lifecycle("【增量检查】$currentModuleName - $taskType 扫描 ${files.size} 个暂存文件")
-                            project.files(files).asFileTree
-                        } else {
-                            project.files().asFileTree
-                        }
+                    stagedFilesProvider.map { paths ->
+                        project.files(paths).asFileTree
                     }
                 } else {
                     provider {
-                        logger.lifecycle("【全量检查】$currentModuleName - $taskType 扫描全量源码")
                         project.fileTree(projectDir) { include("src/*/java/**/*.java") }
                     }
                 }
             }
-            // 覆盖默认 source
             setSource(dynamicSource)
         }
     }
@@ -115,8 +116,9 @@ subprojects {
             // 缓存
             dependency("com.github.ben-manes.caffeine:caffeine:3.2.3")
             // orm
-            dependency("com.mybatis-flex:mybatis-flex-spring-boot3-starter:1.11.5")
-            dependency("com.mybatis-flex:mybatis-flex-codegen:1.11.5")
+            dependency("com.mybatis-flex:mybatis-flex-spring-boot3-starter:1.11.6")
+            dependency("com.mybatis-flex:mybatis-flex-codegen:1.11.6")
+            dependency("com.mybatis-flex:mybatis-flex-processor:1.11.6")
             //jwt
             dependency("io.jsonwebtoken:jjwt-api:0.13.0")
             dependency("io.jsonwebtoken:jjwt-impl:0.13.0")
@@ -124,10 +126,11 @@ subprojects {
             //文档
             dependency("com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter:4.5.0")
             //数据库迁移
-            dependency("org.flywaydb:flyway-core:12.0.0")
-            dependency("org.flywaydb:flyway-database-postgresql:12.0.0")
+            dependency("org.flywaydb:flyway-core:11.20.3")
+            dependency("org.flywaydb:flyway-database-postgresql:11.20.3")
         }
     }
+
 }
 tasks.register("codeCheck") {
     group = "quality"
