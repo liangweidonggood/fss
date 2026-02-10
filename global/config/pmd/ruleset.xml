@@ -46,10 +46,18 @@
     <rule ref="category/java/design.xml">
         <exclude name="UseUtilityClass"/>
         <exclude name="UselessOverridingMethod"/>
+        <exclude name="DataClass"/>
+        <exclude name="LoosePackageCoupling"/>
+        <exclude name="SignatureDeclareThrowsException"/>
     </rule>
     <rule ref="category/java/design.xml/TooManyMethods">
         <properties>
             <property name="maxmethods" value="30" />
+        </properties>
+    </rule>
+    <rule ref="category/java/design.xml/LawOfDemeter">
+        <properties>
+            <property name="trustRadius" value="2"/>
         </properties>
     </rule>
     <!-- 4 文档 -->
@@ -86,10 +94,9 @@
             <property name="typesThatShouldNotBeCaught" value="java.lang.RuntimeException,java.lang.Throwable,java.lang.Error" />
         </properties>
     </rule>
-
-
     <!-- 6 多线程 -->
     <rule ref="category/java/multithreading.xml">
+        <exclude name="DoNotUseThreads"/>
     </rule>
     <!-- 7 性能优化-->
     <rule ref="category/java/performance.xml">

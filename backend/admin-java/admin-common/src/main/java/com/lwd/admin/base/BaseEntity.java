@@ -17,6 +17,7 @@ public class BaseEntity implements Serializable {
     private LocalDateTime createDateTime;
     private LocalDateTime updateDateTime;
     private Long updateUserId;
+    private Long createUserId;
     private Integer isDeleted;
     private Integer version;
 }

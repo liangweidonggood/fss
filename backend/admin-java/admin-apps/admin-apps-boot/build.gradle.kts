@@ -8,7 +8,7 @@ dependencies{
     implementation("com.mybatis-flex:mybatis-flex-spring-boot3-starter")
 
     //模块依赖
-    //implementation(project(":admin-auth"))
+    implementation(project(":admin-auth"))
     implementation(project(":admin-common"))
     implementation(project(":admin-core:admin-core-service"))
     implementation(project(":admin-api:admin-api-system"))

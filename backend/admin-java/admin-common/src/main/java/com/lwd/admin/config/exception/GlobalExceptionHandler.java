@@ -6,12 +6,15 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
+
 
 /**
  * 全局异常处理
@@ -21,6 +24,24 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    /**
+     * 捕获权限不足 (403)
+     */
+    @ExceptionHandler(AccessDeniedException.class)
+    public Result<Void> handleAccessDeniedException(AccessDeniedException ex) {
+        log.warn("权限不足: {}", ex.getMessage());
+        return Result.fail(ResultCode.AUTH_FORBIDDEN);
+    }
+
+    /**
+     * 捕获未登录或认证失败 (401)
+     */
+    @ExceptionHandler(AuthenticationException.class)
+    public Result<Void> handleAuthenticationException(AuthenticationException ex) {
+        log.warn("未登录: {}", ex.getMessage());
+        return Result.fail(ResultCode.UNAUTHORIZED);
+    }
 
     /**
      * 处理自定义业务异常

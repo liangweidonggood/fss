@@ -5,9 +5,8 @@ dependencies{
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.mybatis-flex:mybatis-flex-spring-boot3-starter")
     implementation("com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter")
-    implementation("com.mybatis-flex:mybatis-flex-codegen")
-
-    implementation("com.zaxxer:HikariCP")
+    implementation("org.springframework.boot:spring-boot-starter-cache")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.postgresql:postgresql")
     implementation("org.flywaydb:flyway-core")
 

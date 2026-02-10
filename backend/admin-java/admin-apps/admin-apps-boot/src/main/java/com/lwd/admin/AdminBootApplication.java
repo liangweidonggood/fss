@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.ConfigurableEnvironment;
 
@@ -14,6 +15,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
  *
  * @author lwd
  */
+@EnableCaching
 @Slf4j
 @MapperScan("com.lwd.admin.**.mapper")
 @SpringBootApplication
@@ -30,9 +32,8 @@ public class AdminBootApplication {
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
         SpringApplication app = new SpringApplication(AdminBootApplication.class);
-        app.addListeners((ApplicationListener<ApplicationEnvironmentPreparedEvent>) event -> {
-            globalEnv = event.getEnvironment();
-        });
+        app.addListeners((ApplicationListener<ApplicationEnvironmentPreparedEvent>) event -> globalEnv =
+                event.getEnvironment());
         app.run(args);
         long endTime = System.currentTimeMillis();
         long startupTime = endTime - startTime;

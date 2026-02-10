@@ -1,5 +1,6 @@
 package com.lwd.admin.config.flex;
 
+import com.lwd.admin.constant.DbColumn;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.core.FlexGlobalConfig;
 import com.mybatisflex.core.audit.AuditManager;
@@ -34,11 +35,11 @@ public class FlexConfig implements ConfigurationCustomizer {
         keyConfig.setBefore(true);
         globalConfig.setKeyConfig(keyConfig);
         // 全局乐观锁字段
-        globalConfig.setVersionColumn("version");
+        globalConfig.setVersionColumn(DbColumn.VERSION);
         // 逻辑删除处理器 0:正常,1:删除
         LogicDeleteManager.setProcessor(new IntegerLogicDeleteProcessor());
         // 全局逻辑删除字段
-        globalConfig.setLogicDeleteColumn("is_deleted");
+        globalConfig.setLogicDeleteColumn(DbColumn.IS_DELETED);
         // 全局监听器
         GlobalInsertListener globalInsertListener = new GlobalInsertListener();
         GlobalUpdateListener globalUpdateListener = new GlobalUpdateListener();
@@ -58,7 +59,7 @@ public class FlexConfig implements ConfigurationCustomizer {
     }
 
     /**
-     * 数据权限监听器
+     * 动态Schema
      */
     @Bean
     public DynamicSchemaProcessor dynamicSchemaProcessor() {

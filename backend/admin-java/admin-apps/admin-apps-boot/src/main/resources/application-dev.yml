@@ -63,6 +63,9 @@ springdoc:
   group-configs:
     - group: 'default'
       paths-to-match:
+        - '/login'
+        - '/error'
+        - '/favicon.ico'
         - '/user/**'
         - '/tenant/**'
 
@@ -76,6 +79,19 @@ knife4j:
 
 # 自定义配置
 custom-config:
+  common:
+    excludeUrls:
+      - /login
+      - /public/**
+      - /actuator/**
+      - /druid/**
+      - /favicon.ico
+      - /doc.html
+      - /webjars/**
+      - /swagger-resources/**
+      - /v2/api-docs/**
+      - /v3/api-docs/**
+      - /swagger-ui/**
   multi-tenant:
     enable: true
     default-schema: fss_master
