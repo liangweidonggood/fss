@@ -46,5 +46,11 @@ go.sum
 **/java/*.iml
 **/java/.idea
 
+# Eclipse IDE generated files
+*.project
+*.classpath
+.settings/
+bin/
+*.class
 
 /backend/admin-java/.gradle/
