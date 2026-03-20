@@ -1,4 +1,9 @@
 {
-  "projectName": "FSS 全栈脚手架",
-  "description": "现代化全栈脚手架，支持多前端应用和多语言后端"
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash",
+      "WebFetch"
+    ]
+  }
 }
