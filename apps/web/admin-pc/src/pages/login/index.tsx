@@ -23,20 +23,13 @@ const LoginPage: React.FC = () => {
 
   // 状态
   const [showCaptcha, setShowCaptcha] = useState(false)
-  const [captchaText, setCaptchaText] = useState('')
-  const [captchaImage, setCaptchaImage] = useState('')
+  const [, setCaptchaText] = useState('')
+  const [captchaImage, setCaptchaImage] = useState(() => {
+    const text = generateCaptchaText(4)
+    return generateCaptchaImage(text)
+  })
   const [loading, setLoading] = useState(false)
   const [form] = Form.useForm<LoginFormValues>()
-
-  // 从存储恢复用户名
-  useEffect(() => {
-    const savedUsername = localStorage.getItem('remembered_username') || sessionStorage.getItem('remembered_username')
-    if (savedUsername) {
-      form.setFieldValue('username', savedUsername)
-    }
-    // 初始生成验证码
-    refreshCaptcha()
-  }, [form])
 
   // 刷新验证码
   const refreshCaptcha = () => {
@@ -46,15 +39,28 @@ const LoginPage: React.FC = () => {
     setCaptchaImage(image)
   }
 
+  // 从存储恢复用户名
+  useEffect(() => {
+    const savedUsername =
+      localStorage.getItem('remembered_username') ||
+      sessionStorage.getItem('remembered_username')
+    if (savedUsername) {
+      form.setFieldValue('username', savedUsername)
+    }
+  }, [form])
+
   // 表单提交
   const handleFinish = async (values: LoginFormValues) => {
     setLoading(true)
 
     // 模拟异步登录请求
-    await new Promise(resolve => setTimeout(resolve, 800))
+    await new Promise((resolve) => setTimeout(resolve, 800))
 
     // 如果需要验证码但校验失败
-    if (showCaptcha && values.captcha?.toLowerCase() !== captchaText.toLowerCase()) {
+    if (
+      showCaptcha &&
+      values.captcha?.toLowerCase() !== captchaText.toLowerCase()
+    ) {
       message.error('验证码错误，请重新输入')
       refreshCaptcha()
       setLoading(false)
@@ -87,7 +93,12 @@ const LoginPage: React.FC = () => {
 
   // 已登录跳转到首页
   if (isLoggedIn) {
-    return <Navigate to="/" replace />
+    return (
+      <Navigate
+        to="/"
+        replace
+      />
+    )
   }
 
   return (
@@ -95,7 +106,9 @@ const LoginPage: React.FC = () => {
       {/* 左侧品牌区域 */}
       <div className="hidden lg:flex lg:w-[60%] bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600 flex-col justify-center items-center text-white">
         <div className="text-center px-8">
-          <h1 className="text-5xl font-bold mb-6 tracking-tight">FSS 管理后台</h1>
+          <h1 className="text-5xl font-bold mb-6 tracking-tight">
+            FSS 管理后台
+          </h1>
           <p className="text-xl text-blue-100">Full-Stack Scaffolding</p>
           <p className="text-lg text-blue-100 mt-2">现代化全栈开发脚手架</p>
         </div>
@@ -147,7 +160,10 @@ const LoginPage: React.FC = () => {
                   rules={[{ required: true, message: '请输入验证码' }]}
                   className="flex-1 mb-4"
                 >
-                  <Input placeholder="图形验证码" maxLength={4} />
+                  <Input
+                    placeholder="图形验证码"
+                    maxLength={4}
+                  />
                 </Form.Item>
                 <div className="w-[120px] h-[40px]">
                   <img
@@ -167,10 +183,17 @@ const LoginPage: React.FC = () => {
             )}
 
             <div className="flex justify-between items-center mb-6">
-              <Form.Item name="remember" valuePropName="checked" noStyle>
+              <Form.Item
+                name="remember"
+                valuePropName="checked"
+                noStyle
+              >
                 <Checkbox>记住我</Checkbox>
               </Form.Item>
-              <a className="text-blue-600 hover:text-blue-500 text-sm" href="#">
+              <a
+                className="text-blue-600 hover:text-blue-500 text-sm"
+                href="#"
+              >
                 忘记密码?
               </a>
             </div>
