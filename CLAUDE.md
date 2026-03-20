@@ -99,6 +99,45 @@ fss/
 - 不要将后端代码加入 pnpm workspace
 - 使用 Turborepo 统一管理构建任务
 
+## Git 提交规范
+
+所有提交必须遵循 Conventional Commits 规范，格式为 `type(scope): subject`
+
+### 允许的提交类型 (type)
+
+- `feat` - 新功能
+- `fix` - 修复 bug
+- `perf` - 性能优化
+- `style` - 代码格式（不影响功能）
+- `docs` - 文档更新
+- `test` - 测试相关
+- `refactor` - 重构（既不是新功能也不是修复）
+- `build` - 构建系统或依赖项变更
+- `ci` - CI/CD 配置文件变更
+- `chore` - 其他不修改 src 或测试文件的变更
+- `revert` - 回退提交
+- `wip` - 工作进行中
+- `workflow` - 工作流相关
+- `types` - 类型定义变更
+- `release` - 版本发布
+
+### 提交格式要求
+
+- 主题行（subject）不能为空
+- 类型（type）必须从上述列表中选择
+- 标题最大长度 108 字符
+- 建议在正文前添加空行
+- 建议在页脚前添加空行
+
+### 提交示例
+
+```bash
+feat(login): 添加验证码功能
+fix(api): 修复用户认证超时问题
+refactor(database): 优化查询性能
+docs(readme): 更新安装说明
+```
+
 ## 技术栈
 
 **前端:** React 19, TypeScript 5.9, Vite 7.2, Ant Design 6.1, UnoCSS 66.5, Redux Toolkit 2.11, React Router 7.11
