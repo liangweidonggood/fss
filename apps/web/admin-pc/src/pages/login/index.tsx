@@ -23,9 +23,10 @@ const LoginPage: React.FC = () => {
 
   // 状态
   const [showCaptcha, setShowCaptcha] = useState(false)
-  const [, setCaptchaText] = useState('')
+  const [captchaText, setCaptchaText] = useState('')
   const [captchaImage, setCaptchaImage] = useState(() => {
     const text = generateCaptchaText(4)
+    setCaptchaText(text)
     return generateCaptchaImage(text)
   })
   const [loading, setLoading] = useState(false)
@@ -49,6 +50,10 @@ const LoginPage: React.FC = () => {
     }
   }, [form])
 
+  // 默认账号密码
+  const DEFAULT_USER = 'admin'
+  const DEFAULT_PASSWORD = '123'
+
   // 表单提交
   const handleFinish = async (values: LoginFormValues) => {
     setLoading(true)
@@ -67,9 +72,13 @@ const LoginPage: React.FC = () => {
       return
     }
 
-    // 模拟验证：用户名密码非空就算成功（演示）
-    // 实际项目这里调用后端 API
-    if (values.username && values.password) {
+    // 验证用户名密码
+    const isValid =
+      values.username === DEFAULT_USER &&
+      values.password === DEFAULT_PASSWORD
+
+    if (isValid) {
+      // 登录成功
       // 处理记住我
       if (form.getFieldValue('remember')) {
         localStorage.setItem('remembered_username', values.username)
@@ -84,7 +93,9 @@ const LoginPage: React.FC = () => {
       navigate('/', { replace: true })
     } else {
       // 登录失败，显示验证码
-      setShowCaptcha(true)
+      if (!showCaptcha) {
+        setShowCaptcha(true)
+      }
       refreshCaptcha()
       message.error('用户名或密码错误')
       setLoading(false)
