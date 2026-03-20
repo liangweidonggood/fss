@@ -17,7 +17,11 @@ export function generateCaptchaText(length = 4): string {
  * @param width 画布宽度，默认 120
  * @param height 画布高度，默认 40
  */
-export function generateCaptchaImage(text: string, width = 120, height = 40): string {
+export function generateCaptchaImage(
+  text: string,
+  width = 120,
+  height = 40,
+): string {
   const canvas = document.createElement('canvas')
   canvas.width = width
   canvas.height = height

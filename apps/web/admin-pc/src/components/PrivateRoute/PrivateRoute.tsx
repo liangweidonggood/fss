@@ -11,7 +11,12 @@ const PrivateRoute: React.FC = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn)
 
   if (!isLoggedIn) {
-    return <Navigate to="/login" replace />
+    return (
+      <Navigate
+        to="/login"
+        replace
+      />
+    )
   }
 
   return <Outlet />
