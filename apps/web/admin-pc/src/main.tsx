@@ -5,13 +5,17 @@ import { StrictMode } from 'react'
 import zhCN from 'antd/locale/zh_CN'
 import { App as AppContainer, ConfigProvider } from 'antd'
 import { RouterProvider } from 'react-router'
+import { Provider } from 'react-redux'
+import { store } from '@/store'
 import router from '@/router'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ConfigProvider locale={zhCN}>
       <AppContainer component={false}>
-        <RouterProvider router={router} />
+        <Provider store={store}>
+          <RouterProvider router={router} />
+        </Provider>
       </AppContainer>
     </ConfigProvider>
   </StrictMode>,
