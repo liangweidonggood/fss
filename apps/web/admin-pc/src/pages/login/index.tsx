@@ -74,8 +74,7 @@ const LoginPage: React.FC = () => {
 
     // 验证用户名密码
     const isValid =
-      values.username === DEFAULT_USER &&
-      values.password === DEFAULT_PASSWORD
+      values.username === DEFAULT_USER && values.password === DEFAULT_PASSWORD
 
     if (isValid) {
       // 登录成功
