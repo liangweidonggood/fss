@@ -1,3 +1,6 @@
+# OMC runtime
+.omc/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
