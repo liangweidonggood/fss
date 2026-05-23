@@ -37,9 +37,10 @@ Cargo.lock
 go.sum
 
 # Python 通用
+**/.venv
+**/__pycache__
+*.pyc
 **/python/venv
-**/python/__pycache__
-**/python/*.pyc
 **/python/dist
 **/python/build
 
